@@ -19,7 +19,7 @@ export const api = {
     return res.json();
   },
   
-  getAgents: async (page = 1, limit = 10, search = "", status = "") => {
+  getAgents: async (page = 1, limit = 5, search = "", status = "") => {
     const res = await fetch(
       `${BASE_URL}/agents?page=${page}&limit=${limit}&search=${search}&status=${status}`, 
       { headers: getHeaders() }

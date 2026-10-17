@@ -19,7 +19,7 @@ export default function Dashboard() {
 
   const fetchAgents = useCallback(async () => {
     try {
-      const data = await api.getAgents(page, 10, search, status);
+      const data = await api.getAgents(page, 5, search, status);
       setAgents(data.agents);
       setTotalPages(data.pagination.totalPages || 1);
     } catch (error) {
