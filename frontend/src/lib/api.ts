@@ -28,6 +28,16 @@ export const api = {
     return res.json();
   },
 
+  // For individual Agent
+  getAgent: async (id: string) => {
+    const res = await fetch(`${BASE_URL}/agents/${id}`, {
+      headers: getHeaders(),
+    });
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.error || "Failed to fetch agent details.");
+    return result;
+  },
+
   createAgent: async (data: any) => {
     const res = await fetch(`${BASE_URL}/agents`, {
       method: "POST",
@@ -45,8 +55,8 @@ export const api = {
       headers: getHeaders(),
       body: JSON.stringify(data),
     });
-    if (!res.ok) throw new Error("Failed to update agent.");
-    return res.json();
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.error || "Failed to update agent.");
   },
 
   deleteAgent: async (id: string) => {

@@ -100,75 +100,101 @@ router.get("/:id", async (req: Request, res: Response): Promise<void> => {
 });
 
 // 3. CREATE NEW AGENT (Protected)
-router.post("/", authMiddleware, async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { fullName, phoneNumber, email, serviceArea, status } = req.body;
+router.post(
+  "/",
+  authMiddleware,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { fullName, phoneNumber, email, serviceArea, status } = req.body;
 
-    if (!fullName || !phoneNumber || !email || !serviceArea) {
-      res.status(400).json({ error: "Missing required agent fields." });
-      return;
+      if (!fullName || !phoneNumber || !email || !serviceArea) {
+        res.status(400).json({ error: "Missing required agent fields." });
+        return;
+      }
+
+      const newAgent = await prisma.agent.create({
+        data: {
+          fullName,
+          phoneNumber,
+          email,
+          serviceArea,
+          status: status || "active",
+        },
+      });
+
+      await invalidateAgentCaches();
+
+      res.status(201).json(newAgent);
+    } catch (error: any) {
+      if (error.code === "P2002") {
+        res
+          .status(400)
+          .json({ error: "An agent with this email already exists." });
+        return;
+      }
+      res.status(500).json({ error: "Failed to create agent." });
     }
-
-    const newAgent = await prisma.agent.create({
-      data: { fullName, phoneNumber, email, serviceArea, status: status || "active" },
-    });
-
-    await invalidateAgentCaches();
-
-    res.status(201).json(newAgent);
-  } catch (error: any) {
-    if (error.code === "P2002") {
-      res.status(400).json({ error: "An agent with this email already exists." });
-      return;
-    }
-    res.status(500).json({ error: "Failed to create agent." });
-  }
-});
+  },
+);
 
 // 4. UPDATE AGENT (Protected)
-router.put("/:id", authMiddleware, async (req: Request, res: Response): Promise<void> => {
-  try {
-    const id = req.params.id as string;
-    const { fullName, phoneNumber, email, serviceArea, status } = req.body;
+router.put(
+  "/:id",
+  authMiddleware,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const id = req.params.id as string;
+      const { fullName, phoneNumber, email, serviceArea, status } = req.body;
 
-    const existingAgent = await prisma.agent.findUnique({ where: { id } });
-    if (!existingAgent) {
-      res.status(404).json({ error: "Delivery agent not found." });
-      return;
+      const existingAgent = await prisma.agent.findUnique({ where: { id } });
+      if (!existingAgent) {
+        res.status(404).json({ error: "Delivery agent not found." });
+        return;
+      }
+
+      const updatedAgent = await prisma.agent.update({
+        where: { id },
+        data: { fullName, phoneNumber, email, serviceArea, status },
+      });
+
+      await invalidateAgentCaches(id);
+
+      res.json(updatedAgent);
+    } catch (error: any) {
+      if (error.code === "P2002") {
+        res
+          .status(400)
+          .json({ error: "Email or phone number already exists." });
+        return;
+      }
+      res.status(500).json({ error: "Failed to update agent." });
     }
-
-    const updatedAgent = await prisma.agent.update({
-      where: { id },
-      data: { fullName, phoneNumber, email, serviceArea, status },
-    });
-
-    await invalidateAgentCaches(id);
-
-    res.json(updatedAgent);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to update agent." });
-  }
-});
+  },
+);
 
 // 5. DELETE AGENT (Protected)
-router.delete("/:id", authMiddleware, async (req: Request, res: Response): Promise<void> => {
-  try {
-    const id = req.params.id as string;
+router.delete(
+  "/:id",
+  authMiddleware,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const id = req.params.id as string;
 
-    const existingAgent = await prisma.agent.findUnique({ where: { id } });
-    if (!existingAgent) {
-      res.status(404).json({ error: "Delivery agent not found." });
-      return;
+      const existingAgent = await prisma.agent.findUnique({ where: { id } });
+      if (!existingAgent) {
+        res.status(404).json({ error: "Delivery agent not found." });
+        return;
+      }
+
+      await prisma.agent.delete({ where: { id } });
+
+      await invalidateAgentCaches(id);
+
+      res.json({ message: "Agent deleted successfully." });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete agent." });
     }
-
-    await prisma.agent.delete({ where: { id } });
-
-    await invalidateAgentCaches(id);
-
-    res.json({ message: "Agent deleted successfully." });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to delete agent." });
-  }
-});
+  },
+);
 
 export default router;
