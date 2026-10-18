@@ -1,7 +1,8 @@
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 function getHeaders() {
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
   return {
     "Content-Type": "application/json",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -18,11 +19,11 @@ export const api = {
     if (!res.ok) throw new Error("Login failed. Check your credentials.");
     return res.json();
   },
-  
+
   getAgents: async (page = 1, limit = 5, search = "", status = "") => {
     const res = await fetch(
-      `${BASE_URL}/agents?page=${page}&limit=${limit}&search=${search}&status=${status}`, 
-      { headers: getHeaders() }
+      `${BASE_URL}/agents?page=${page}&limit=${limit}&search=${search}&status=${status}`,
+      { headers: getHeaders() },
     );
     if (!res.ok) throw new Error("Failed to fetch agents.");
     return res.json();
@@ -34,7 +35,8 @@ export const api = {
       headers: getHeaders(),
     });
     const result = await res.json();
-    if (!res.ok) throw new Error(result.error || "Failed to fetch agent details.");
+    if (!res.ok)
+      throw new Error(result.error || "Failed to fetch agent details.");
     return result;
   },
 
@@ -64,7 +66,7 @@ export const api = {
       method: "DELETE",
       headers: getHeaders(),
     });
-    if (!res.ok) throw new Error("Failed to delete agent.");
-    return res.json();
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.error || "Failed to delete agent");
   },
 };

@@ -2,6 +2,8 @@ import { Router, Request, Response } from "express";
 import prisma from "../lib/prisma";
 import redisClient, { invalidateAgentCaches } from "../lib/redis";
 import { authMiddleware } from "../middleware/auth";
+import { validate } from "../middleware/validate";
+import { agentSchema } from "../schemas/agentSchemas";
 
 const router = Router();
 
@@ -103,6 +105,7 @@ router.get("/:id", async (req: Request, res: Response): Promise<void> => {
 router.post(
   "/",
   authMiddleware,
+  validate(agentSchema),
   async (req: Request, res: Response): Promise<void> => {
     try {
       const { fullName, phoneNumber, email, serviceArea, status } = req.body;
@@ -141,6 +144,7 @@ router.post(
 router.put(
   "/:id",
   authMiddleware,
+  validate(agentSchema),
   async (req: Request, res: Response): Promise<void> => {
     try {
       const id = req.params.id as string;

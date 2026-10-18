@@ -55,8 +55,9 @@ export default function Dashboard() {
       const data = await api.getAgents(page, 5, search, status);
       setAgents(data.agents);
       setTotalPages(data.pagination.totalPages || 1);
-    } catch (error) {
-      router.push("/login");
+    } catch (error: any) {
+      localStorage.removeItem("token");
+      router.replace("/login");
     }
   }, [page, search, status, router]);
 
@@ -83,6 +84,11 @@ export default function Dashboard() {
       setDeleteId(null);
       fetchAgents();
     } catch (error: any) {
+      if (error.message.includes("Invalid or expired token")) {
+        localStorage.removeItem("token");
+        router.replace("/login");
+        return;
+      }
       setDeleteError(error.message || "Failed to delete agent.");
     }
   };
@@ -131,7 +137,11 @@ export default function Dashboard() {
       setIsModalOpen(false);
       fetchAgents();
     } catch (error: any) {
-      // Catches backend errors like duplicate email or duplicate phone
+      if (error.message.includes("Invalid or expired token")) {
+        localStorage.removeItem("token");
+        router.replace("/login");
+        return;
+      }
       setFormError(error.message || "An error occurred while saving.");
     }
   };
