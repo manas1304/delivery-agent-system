@@ -66,10 +66,10 @@ You will need `.env` files in both the `backend` and `frontend` directories. **D
 PORT=5000
 
 # PostgreSQL Connection String (Neon DB or local)
-DATABASE_URL="postgresql://<user>:<password>@<host>/<db>?sslmode=require"
+DATABASE_URL="postgresql://postgres:password123@localhost:5432/delivery_db"
 
-# Redis Connection String (Render or local)
-REDIS_URL="rediss://<user>:<password>@<host>:<port>"
+# Redis Connection String (Upstash or local)
+REDIS_URL="redis://localhost:6379"
 
 # JWT Secret for Authentication
 JWT_SECRET="your_super_secret_jwt_key_here"
