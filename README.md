@@ -10,7 +10,7 @@ A robust, full-stack web application for managing delivery agents. This system f
 * **Backend:** Node.js, Express.js, TypeScript
 * **Database:** PostgreSQL (hosted on Neon DB)
 * **ORM:** Prisma
-* **Caching:** Redis (hosted on Render)
+* **Caching:** Redis (hosted on Upstash)
 * **Authentication:** JWT (JSON Web Tokens)
 * **Validation:** Zod
 * **Frontend:** React, Next.js (App Router), Tailwind CSS
