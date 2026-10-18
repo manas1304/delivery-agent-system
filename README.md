@@ -44,7 +44,13 @@ To optimize read operations and reduce database load, Redis is implemented for t
 * **Modal-Driven UX:** Creation, editing, and deletion happen within accessible, backdrop-blurred modals rather than navigating to separate pages, keeping the user in context.
 * **Secure Routing:** The frontend features a dedicated login gateway. `localStorage` is used for token management, and unauthorized API calls trigger an immediate frontend interception, wiping the expired token and redirecting the user to the login screen.
 
-## ⚙️ Setup Instructions
+
+## 💻 Local Setup Instructions
+
+### . Database & Cache (Docker)
+> **Optional Docker Setup:** If you have Docker installed, run `docker-compose up -d` in the root folder to instantly spin up the required PostgreSQL database and Redis containers.
+
+*(If you do not use Docker, please ensure you have your own local PostgreSQL and Redis servers running).*
 
 ### Prerequisites
 
