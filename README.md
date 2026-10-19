@@ -1,4 +1,4 @@
-# Delivery Agent Management System
+<img width="626" height="319" alt="image" src="https://github.com/user-attachments/assets/becd6239-6e05-4d9a-9f01-298e2fcf79ca" /># Delivery Agent Management System
 
 A robust, full-stack web application for managing delivery agents. This system features a secure backend API, a responsive modern frontend, strict data validation, and a highly optimized Redis caching layer.
 
@@ -119,7 +119,8 @@ npm run dev
 
 1. **Authentication (Login)**
    * Navigate to `http://localhost:3000` (or the live URL). You will be redirected to `/login`.
-   * Enter the admin credentials.
+   * Enter the admin credentials. 
+   **( Test Credentials : username - admin, password - password123 )**
    * Verify you are redirected to the Dashboard and a JWT is stored.
 
 2. **Create (POST)**
