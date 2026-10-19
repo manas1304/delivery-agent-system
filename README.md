@@ -1,4 +1,4 @@
-<img width="626" height="319" alt="image" src="https://github.com/user-attachments/assets/becd6239-6e05-4d9a-9f01-298e2fcf79ca" /># Delivery Agent Management System
+# Delivery Agent Management System
 
 A robust, full-stack web application for managing delivery agents. This system features a secure backend API, a responsive modern frontend, strict data validation, and a highly optimized Redis caching layer.
 
