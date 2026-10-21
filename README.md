@@ -4,6 +4,7 @@ A robust, full-stack web application for managing delivery agents. This system f
 
 **Live Demo:** https://delivery-agent-system.vercel.app/
 **Live API:** https://delivery-agent-system-rxct.onrender.com/
+**( Test Credentials : username - admin, password - password123 )**
 
 ## 🚀 Tech Stack
 
@@ -120,7 +121,6 @@ npm run dev
 1. **Authentication (Login)**
    * Navigate to `http://localhost:3000` (or the live URL). You will be redirected to `/login`.
    * Enter the admin credentials. 
-   **( Test Credentials : username - admin, password - password123 )**
    * Verify you are redirected to the Dashboard and a JWT is stored.
 
 2. **Create (POST)**
